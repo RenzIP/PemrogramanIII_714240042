@@ -5,21 +5,21 @@ export default function AuthLayout({ eyebrow, title, description, children }) {
       <div className="relative grid w-full max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-white shadow-2xl lg:grid-cols-[1.05fr_0.95fr]">
         <section className="hidden bg-gradient-to-br from-blue-700 via-indigo-700 to-slate-950 p-10 text-white lg:block">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-blue-200">
-            Pertemuan 11
+            Pertemuan 12
           </p>
           <h1 className="mt-5 text-4xl font-bold leading-tight">
-            Autentikasi JWT untuk CRUD Mahasiswa
+            JWT Session & Profile
           </h1>
           <p className="mt-5 max-w-md text-sm leading-7 text-blue-100">
-            Login, role-based access, token interceptor, dan private route
-            terhubung dalam satu aplikasi.
+            Kelola sesi, profil, password, token, dan hak akses pengguna dalam
+            satu aplikasi.
           </p>
           <div className="mt-10 grid gap-3 text-sm text-blue-50">
             <p className="rounded-2xl border border-white/10 bg-white/10 p-4">
-              Password disimpan sebagai hash bcrypt.
+              Ubah password diamankan menggunakan bcrypt.
             </p>
             <p className="rounded-2xl border border-white/10 bg-white/10 p-4">
-              Endpoint mahasiswa hanya dapat diakses role admin.
+              Respons 403 membedakan akun user dan admin.
             </p>
           </div>
         </section>

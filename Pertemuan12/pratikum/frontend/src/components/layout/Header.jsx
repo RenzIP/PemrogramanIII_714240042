@@ -1,4 +1,19 @@
+import Swal from "sweetalert2";
+import { getAuthToken } from "../../services/auth";
+
 export default function Header({ pageTitle, onToggleSidebar, user, onLogout }) {
+  const showToken = () => {
+    const token = getAuthToken();
+    Swal.fire({
+      title: "Token JWT",
+      input: "textarea",
+      inputValue: token ?? "Token tidak tersedia",
+      inputAttributes: { readonly: "readonly" },
+      confirmButtonText: "Tutup",
+      width: 700,
+    });
+  };
+
   return (
     <header className="border-b border-slate-200 bg-white/80 text-slate-800 backdrop-blur">
       <div className="flex w-full items-center justify-between px-4 py-4 md:px-6">
@@ -12,7 +27,7 @@ export default function Header({ pageTitle, onToggleSidebar, user, onLogout }) {
             Menu
           </button>
           <div>
-            <h1 className="text-lg font-semibold md:text-xl">Praktikum JWT</h1>
+            <h1 className="text-lg font-semibold md:text-xl">Praktikum 12</h1>
             <p className="text-xs text-slate-500">{pageTitle}</p>
           </div>
         </div>
@@ -21,6 +36,13 @@ export default function Header({ pageTitle, onToggleSidebar, user, onLogout }) {
             <p className="text-xs font-semibold text-slate-800">{user?.username ?? "User"}</p>
             <p className="text-[11px] uppercase text-slate-500">{user?.role ?? "-"}</p>
           </div>
+          <button
+            type="button"
+            onClick={showToken}
+            className="hidden rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100 sm:block"
+          >
+            Lihat Token
+          </button>
           <button
             type="button"
             onClick={onLogout}

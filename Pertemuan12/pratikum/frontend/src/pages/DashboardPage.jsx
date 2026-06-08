@@ -2,15 +2,15 @@ import { Link } from "react-router-dom";
 import Button from "../components/atoms/Button";
 
 const stats = [
-  { label: "Materi Aktif", value: "JWT Auth" },
-  { label: "Pertemuan", value: "11" },
-  { label: "Akses CRUD", value: "Admin Only" },
+  { label: "Materi Aktif", value: "JWT Session" },
+  { label: "Pertemuan", value: "12" },
+  { label: "Fitur Mandiri", value: "4 Selesai" },
 ];
 
 const highlights = [
-  "Login dan register menggunakan API Fiber dengan password terenkripsi bcrypt.",
-  "Token JWT otomatis dikirim melalui Axios untuk setiap request data mahasiswa.",
-  "Seluruh halaman CRUD dilindungi Private Route dan role admin.",
+  "Respons 403 menampilkan pesan khusus ketika akun bukan admin.",
+  "Profil menampilkan username dan role dari localStorage.",
+  "Password dapat diubah dan token JWT dapat dilihat melalui modal.",
 ];
 
 export default function DashboardPage() {
@@ -18,12 +18,12 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <section className="rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 p-6 text-white shadow-lg">
         <p className="text-sm uppercase tracking-[0.25em] text-blue-100">
-          Pertemuan 11
+          Pertemuan 12
         </p>
-        <h2 className="mt-2 text-3xl font-bold">JWT Authentication</h2>
+        <h2 className="mt-2 text-3xl font-bold">JWT Session & Profile</h2>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-blue-50">
-          Praktikum ini menerapkan autentikasi JWT, otorisasi role admin, dan
-          proteksi akses CRUD mahasiswa.
+          Praktikum ini mengembangkan autentikasi JWT dengan profil pengguna,
+          ubah password, inspeksi token, dan penanganan akses role.
         </p>
         <div className="mt-5">
           <Link to="/mahasiswa">

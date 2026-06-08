@@ -7,6 +7,7 @@ import MahasiswaDetailPage from "./pages/MahasiswaDetailPage";
 import MahasiswaFormPage from "./pages/MahasiswaFormPage";
 import MahasiswaListPage from "./pages/MahasiswaListPage";
 import RegisterPage from "./pages/RegisterPage";
+import ProfilePage from "./pages/ProfilePage";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="/mahasiswa/add" element={<MahasiswaFormPage mode="create" />} />
           <Route path="/mahasiswa/:npm" element={<MahasiswaDetailPage />} />
           <Route path="/mahasiswa/:npm/edit" element={<MahasiswaFormPage mode="edit" />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

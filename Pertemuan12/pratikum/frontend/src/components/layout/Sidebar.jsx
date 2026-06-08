@@ -17,6 +17,13 @@ const menuItems = [
     icon: "MHS",
     to: "/mahasiswa",
   },
+  {
+    id: "profile",
+    label: "Profil",
+    description: "Akun dan keamanan",
+    icon: "USR",
+    to: "/profile",
+  },
 ];
 
 export default function Sidebar({ isOpen, onClose }) {

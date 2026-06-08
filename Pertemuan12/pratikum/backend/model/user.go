@@ -25,3 +25,8 @@ type LoginResponse struct {
 	Token string           `json:"token"`
 	User  AuthUserResponse `json:"user"`
 }
+
+type ChangePasswordRequest struct {
+	CurrentPassword string `json:"current_password"`
+	NewPassword     string `json:"new_password"`
+}

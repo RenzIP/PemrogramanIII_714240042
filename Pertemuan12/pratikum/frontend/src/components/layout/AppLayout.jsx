@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { clearAuthSession, getAuthUser } from "../../services/auth";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -8,6 +9,7 @@ import Sidebar from "./Sidebar";
 const PAGE_TITLES = {
   "/dashboard": "Dashboard",
   "/mahasiswa": "Data Mahasiswa",
+  "/profile": "Profil",
 };
 
 export default function AppLayout() {
@@ -21,9 +23,21 @@ export default function AppLayout() {
     return PAGE_TITLES[location.pathname] ?? "Praktikum";
   }, [location.pathname]);
 
-  const handleLogout = () => {
-    clearAuthSession();
-    navigate("/login", { replace: true });
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Logout?",
+      text: "Sesi login akan dihapus dari browser.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya, logout",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#dc2626",
+    });
+
+    if (result.isConfirmed) {
+      clearAuthSession();
+      navigate("/login", { replace: true });
+    }
   };
 
   return (
