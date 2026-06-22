@@ -1,0 +1,468 @@
+basePath: /
+definitions:
+  model.AuthLoginSuccessResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.LoginResponse'
+      message:
+        example: login berhasil
+        type: string
+    type: object
+  model.AuthRegisterSuccessResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.AuthUserResponse'
+      message:
+        example: register berhasil
+        type: string
+    type: object
+  model.AuthRequest:
+    properties:
+      password:
+        example: admin123
+        type: string
+      role:
+        example: admin
+        type: string
+      username:
+        example: admin
+        type: string
+    type: object
+  model.AuthUserResponse:
+    properties:
+      id:
+        example: 2f5d7e2a-1234-4567-8901-abcdefabcdef
+        type: string
+      role:
+        example: admin
+        type: string
+      username:
+        example: admin
+        type: string
+    type: object
+  model.ChangePasswordRequest:
+    properties:
+      current_password:
+        example: admin123
+        type: string
+      new_password:
+        example: admin456
+        type: string
+    type: object
+  model.ForbiddenResponse:
+    properties:
+      message:
+        example: user tidak memiliki akses untuk fitur ini
+        type: string
+    type: object
+  model.LoginResponse:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xxxxx
+        type: string
+      user:
+        $ref: '#/definitions/model.AuthUserResponse'
+    type: object
+  model.Mahasiswa:
+    properties:
+      alamat:
+        example: Bandung
+        type: string
+      email:
+        example: budi@example.com
+        type: string
+      hobi:
+        example:
+        - coding
+        - membaca
+        items:
+          type: string
+        type: array
+      nama:
+        example: Budi Santoso
+        type: string
+      no_hp:
+        example: "081234567890"
+        type: string
+      npm:
+        example: 2300012345
+        type: integer
+      prodi:
+        example: Teknik Informatika
+        type: string
+    type: object
+  model.MahasiswaDetailResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.Mahasiswa'
+      message:
+        example: Data berhasil diambil
+        type: string
+    type: object
+  model.MahasiswaListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Mahasiswa'
+        type: array
+      message:
+        example: Data berhasil diambil
+        type: string
+    type: object
+  model.MahasiswaMutationResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.Mahasiswa'
+      message:
+        example: berhasil menambahkan data mahasiswa
+        type: string
+    type: object
+  model.MessageResponse:
+    properties:
+      message:
+        example: operasi berhasil
+        type: string
+    type: object
+  model.Response:
+    properties:
+      data: {}
+      error:
+        example: detail error
+        type: string
+      message:
+        example: detail pesan
+        type: string
+    type: object
+  model.UnauthorizedResponse:
+    properties:
+      message:
+        example: authorization header wajib diisi
+        type: string
+    type: object
+host: 127.0.0.1:3000
+info:
+  contact:
+    email: praktikum@example.com
+    name: Praktikum Pemrograman III
+  description: Dokumentasi API backend be_latihan menggunakan Golang Fiber, GORM,
+    PostgreSQL, dan JWT.
+  title: API Praktikum 13 - be_latihan
+  version: "1.0"
+paths:
+  /api/auth/password:
+    put:
+      consumes:
+      - application/json
+      description: Mengubah password user yang sedang login berdasarkan token JWT.
+      parameters:
+      - description: Payload ubah password
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - BearerAuth: []
+      summary: Ubah password user
+      tags:
+      - Auth
+  /api/mahasiswa/:
+    get:
+      consumes:
+      - application/json
+      description: Mengambil seluruh data mahasiswa. Endpoint ini membutuhkan token
+        JWT, tetapi tidak membatasi role admin.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.MahasiswaListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - BearerAuth: []
+      summary: Ambil semua data mahasiswa
+      tags:
+      - Mahasiswa
+    post:
+      consumes:
+      - application/json
+      description: Menambahkan data mahasiswa baru. Endpoint ini hanya dapat diakses
+        oleh role admin.
+      parameters:
+      - description: Payload data mahasiswa
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.Mahasiswa'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.MahasiswaMutationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.ForbiddenResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - BearerAuth: []
+      summary: Tambah data mahasiswa
+      tags:
+      - Mahasiswa
+  /api/mahasiswa/{npm}:
+    delete:
+      consumes:
+      - application/json
+      description: Menghapus data mahasiswa berdasarkan NPM. Endpoint ini hanya dapat
+        diakses oleh role admin.
+      parameters:
+      - description: NPM mahasiswa
+        in: path
+        name: npm
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.ForbiddenResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - BearerAuth: []
+      summary: Hapus data mahasiswa
+      tags:
+      - Mahasiswa
+    get:
+      consumes:
+      - application/json
+      description: Mengambil satu data mahasiswa berdasarkan NPM. Endpoint ini hanya
+        dapat diakses oleh role admin.
+      parameters:
+      - description: NPM mahasiswa
+        in: path
+        name: npm
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.MahasiswaDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.ForbiddenResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - BearerAuth: []
+      summary: Ambil data mahasiswa berdasarkan NPM
+      tags:
+      - Mahasiswa
+    put:
+      consumes:
+      - application/json
+      description: Mengubah data mahasiswa berdasarkan NPM. NPM pada body tidak mengubah
+        NPM utama pada database.
+      parameters:
+      - description: NPM mahasiswa
+        in: path
+        name: npm
+        required: true
+        type: integer
+      - description: Payload data mahasiswa
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.Mahasiswa'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.MahasiswaMutationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.ForbiddenResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      security:
+      - BearerAuth: []
+      summary: Ubah data mahasiswa
+      tags:
+      - Mahasiswa
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Melakukan login dan mengembalikan JWT jika username dan password
+        valid.
+      parameters:
+      - description: Payload login user
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.AuthLoginSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Login user
+      tags:
+      - Auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Membuat akun user baru. Role dapat diisi admin atau user. Jika
+        role kosong, backend akan memakai default admin.
+      parameters:
+      - description: Payload register user
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.AuthRegisterSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Register user baru
+      tags:
+      - Auth
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
